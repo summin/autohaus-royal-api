@@ -3,34 +3,44 @@ const router = express.Router();
 const customerService = require('./customer.service');
 
 // routes
-router.post('/kunden/:id', submit)
-router.get('/kunden/:id', getByID);
-router.get('/kunden?nachname=Schmidt', getByAttr);
-router.put('/kunden/:id', modify);
-router.delete('/kunden/:id', _delete);
+router.post('', submit)
+router.get('/', getAll);
+router.get('/:field=:value', getByAttr);
+router.get('/:id', getByID);
+// router.get('/kunden?nachname=Schmidt', getByAttr);
+router.put('/:id', modify);
+router.delete('/:id', _delete);
 
 module.exports = router;
 
 function submit(req, res, next) {
     customerService.submit(req.body)
-        .then(() => res.json({}))
+        .then((data) => res.json(data))
+        .catch(err => next(err));
+}
+
+function getAll(req, res, next) {
+    customerService.getAll(req.params.attr)
+        .then((data) => res.json(data))
         .catch(err => next(err));
 }
 
 function getByID(req, res, next) {
-    customerService.get(req.params.attr)
+    console.log(req.params)
+    customerService.getByID(req.params.id)
         .then((data) => res.json(data))
         .catch(err => next(err));
 }
 
 function getByAttr(req, res, next) {
-    customerService.get(req.params.attr)
+    console.log(req.params)
+    customerService.getByAttr(req.params)
         .then((data) => res.json(data))
         .catch(err => next(err));
 }
 
 function modify(req, res, next) {
-    customerService.get(req.params.attr)
+    customerService.modify(req.params.attr)
         .then((data) => res.json(data))
         .catch(err => next(err));
 }

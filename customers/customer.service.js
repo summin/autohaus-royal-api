@@ -7,42 +7,33 @@ const Customer = db.Customer;
 module.exports = {
     submit,
     getByID,
+    getAll,
     getByAttr,
     modify,
     _delete
 };
 
-// GET
-
-async function get(attr) {
-    return await Customer.find( { dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } } );
-}
-
-async function getByAttr(attr) {
-    return await Customer.find( { dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } } );
-}
-
-async function modify(attr) {
-    return await Customer.find( { dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } } );
-}
-
-async function _delete(attr) {
-    return await Customer.find( { dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } } );
-}
-
-// SUBMIT
-
 async function submit(customerParam) {
-
-    if (await Proposal.findOne({ dbContractReferenceNumber: customerParam.dbContractReferenceNumber })) {
-        throw 'Proposal"' + customerParam.dbContractReferenceNumber + '" has already been submitted';
-    }
-
     const customer = new Customer(customerParam);
-
-    await customer.save();
+    await customer.save()
 }
 
 async function getByID(id) {
-    return await Customer.findById(id).select('-hash');
+    return await Customer.find({_id: id})
+}
+
+async function getAll() {
+    return await Customer.find().sort({ createdDate: 'desc' }).limit(10)
+}
+
+async function getByAttr(attr) {
+    return await Customer.find({[attr.field]: attr.value})
+}
+
+async function modify(attr) {
+    return await Customer.find({ dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } });
+}
+
+async function _delete(attr) {
+    return await Customer.find({ dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } });
 }
