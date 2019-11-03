@@ -7,7 +7,6 @@ router.post('', submit)
 router.get('/', getAll);
 router.get('/:field=:value', getByAttr);
 router.get('/:id', getByID);
-// router.get('/kunden?nachname=Schmidt', getByAttr);
 router.put('/:id', modify);
 router.delete('/:id', _delete);
 
@@ -26,22 +25,21 @@ function getAll(req, res, next) {
 }
 
 function getByID(req, res, next) {
-    console.log(req.params)
     customerService.getByID(req.params.id)
         .then((data) => res.json(data))
         .catch(err => next(err));
 }
 
 function getByAttr(req, res, next) {
-    console.log(req.params)
+
     customerService.getByAttr(req.params)
         .then((data) => res.json(data))
         .catch(err => next(err));
 }
 
 function modify(req, res, next) {
-    customerService.modify(req.params.attr)
-        .then((data) => res.json(data))
+    customerService.modify(req.params.id, req.body)
+        .then(() => res.json({}))
         .catch(err => next(err));
 }
 

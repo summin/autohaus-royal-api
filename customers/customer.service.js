@@ -30,8 +30,12 @@ async function getByAttr(attr) {
     return await Customer.find({[attr.field]: attr.value})
 }
 
-async function modify(attr) {
-    return await Customer.find({ dbcreatedDate: { $gt: new Date('2019-10-03T13:24:00') } });
+
+async function modify(id, customerParam) {
+    const customer = await Customer.findById(id);
+    if (!customer ) throw 'Customer not found';
+    Object.assign(customer, customerParam);
+    await customer.save();
 }
 
 async function _delete(attr) {
