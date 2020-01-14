@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const jwt = require('_helpers/jwt');
 const errorHandler = require('_helpers/error-handler');
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -14,8 +15,9 @@ app.use(cors());
 app.use(jwt());
 
 // api routes
-app.use('/nutzer', require('./users/users.controller'));
-app.use('/kunden', require('./customers/customers.controller'));
+app.use('/users', require('./users/users.controller'));
+app.use('/proposals', require('./proposals/proposals.controller'));
+app.use('/contracts', require('./contracts/contract.controller'));
 
 // global error handler
 app.use(errorHandler);
@@ -26,9 +28,8 @@ app.use(function(req, res, next) {
     next();
   });
 
-
 // start server
 const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
-const server = app.listen(port, function () {
+const server = app.listen(4000, function () {
     console.log('Server listening on port ' + port);
 });
